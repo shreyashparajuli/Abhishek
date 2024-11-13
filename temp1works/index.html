@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Page Switcher with Metronome</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Page container to hold the pages -->
+  <div class="page-container" id="pageContainer">
+    <div class="bpm-display" id="bpmDisplay">BPM: 0</div>
+    <div class="page visible" id="page1">
+      <h2>Page 1</h2>
+      <textarea placeholder="Write something on Page 1"></textarea>
+    </div>
+    <div class="page" id="page2">
+      <h2>Page 2</h2>
+      <textarea placeholder="Write something on Page 2"></textarea>
+    </div>
+    <div class="page" id="page3">
+      <h2>Page 3</h2>
+      <textarea placeholder="Write something on Page 3"></textarea>
+    </div>
+    <div class="page" id="page4">
+      <h2>Page 4</h2>
+      <textarea placeholder="Write something on Page 4"></textarea>
+    </div>
+    <div class="page" id="page5">
+      <h2>Page 5</h2>
+      <textarea placeholder="Write something on Page 5"></textarea>
+    </div>
+    <div class="page" id="page6">
+      <h2>Page 6</h2>
+      <textarea placeholder="Write something on Page 6"></textarea>
+    </div>
+    <div class="page" id="page7">
+      <h2>Page 7</h2>
+      <textarea placeholder="Write something on Page 7"></textarea>
+    </div>
+    <div class="page" id="page8">
+      <h2>Page 8</h2>
+      <textarea placeholder="Write something on Page 8"></textarea>
+    </div>
+  </div>
+
+  <!-- Start and Stop buttons -->
+  <div class="buttons">
+    <button onclick="startMetronomeAndSwitcher()">Start</button>
+    <button class="stop" onclick="stopMetronomeAndSwitcher()">Stop</button>
+  </div>
+
+  <!-- Metronome sound -->
+  <audio id="metronomeSound" src="metronome-85688.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,58 +1,50 @@
-const pages = document.querySelectorAll('.page');
-const metronomeSound = document.getElementById('metronomeSound');
-const bpmDisplay = document.getElementById('bpmDisplay');
-let currentPageIndex = 0;
-let metronomeInterval;
-let beepCount = 0;
-let isRunning = false;
+const pageForm = document.getElementById('pageForm');
+const pageCountInput = document.getElementById('pageCount');
+const contentInputs = document.getElementById('contentInputs');
 
-function getRandomBPM() {
-  return Math.floor(Math.random() * (150 - 90 + 1)) + 90; // Random BPM between 90 and 150
-}
+// Generate title and content input fields based on page count
+pageCountInput.addEventListener('input', function () {
+  const pageCount = parseInt(pageCountInput.value, 10);
+  contentInputs.innerHTML = ''; // Clear previous inputs
 
-function bpmToMilliseconds(bpm) {
-  return 60000 / bpm; // Convert BPM to milliseconds
-}
+  for (let i = 1; i <= pageCount; i++) {
+    // Title field
+    const titleLabel = document.createElement('label');
+    titleLabel.textContent = `Title for Page ${i}:`;
+    const titleInput = document.createElement('input');
+    titleInput.type = 'text';
+    titleInput.name = `title${i}`;
+    titleInput.placeholder = `Enter title for Page ${i}`;
+    contentInputs.appendChild(titleLabel);
+    contentInputs.appendChild(titleInput);
 
-function playMetronome() {
-  if (!isRunning) return; // Stop if not running
-  metronomeSound.currentTime = 0;
-  metronomeSound.play();
-  beepCount++; // Increment beep count
-
-  if (beepCount >= 4) { // Change page after 4 beeps
-    switchPage();
-    beepCount = 0; // Reset beep count
+    // Content field
+    const contentLabel = document.createElement('label');
+    contentLabel.textContent = `Content for Page ${i}:`;
+    const contentTextarea = document.createElement('textarea');
+    contentTextarea.name = `content${i}`;
+    contentTextarea.placeholder = `Enter content for Page ${i}`;
+    contentInputs.appendChild(contentLabel);
+    contentInputs.appendChild(contentTextarea);
   }
-}
+});
 
-function switchPage() {
-  // Hide the current page
-  pages[currentPageIndex].classList.remove('visible');
+// Handle form submission
+pageForm.addEventListener('submit', function (event) {
+  event.preventDefault(); // Prevent form from reloading the page
 
-  // Select a new random page
-  currentPageIndex = Math.floor(Math.random() * pages.length);
-  pages[currentPageIndex].classList.add('visible');
+  // Retrieve form values
+  const pageCount = parseInt(pageCountInput.value, 10);
+  const pageData = [];
 
-  // Get a new random tempo and update metronome interval
-  const newBPM = getRandomBPM();
-  bpmDisplay.textContent = `BPM: ${newBPM}`; // Update BPM display
-  const interval = bpmToMilliseconds(newBPM);
-  clearInterval(metronomeInterval); // Clear the previous interval
-  metronomeInterval = setInterval(playMetronome, interval); // Set new interval
-}
+  for (let i = 1; i <= pageCount; i++) {
+    const title = document.querySelector(`input[name="title${i}"]`).value;
+    const content = document.querySelector(`textarea[name="content${i}"]`).value;
+    pageData.push({ title, content });
+  }
 
-function startMetronomeAndSwitcher() {
-  if (isRunning) return; // Prevent multiple intervals
-  isRunning = true;
-  switchPage(); // Start the first page switch
-}
-
-function stopMetronomeAndSwitcher() {
-  clearInterval(metronomeInterval); // Clear the interval
-  metronomeSound.pause(); // Stop the metronome sound
-  metronomeSound.currentTime = 0; // Reset sound to start
-  isRunning = false;
-  beepCount = 0; // Reset beep count
-  bpmDisplay.textContent = 'BPM: 0'; // Reset BPM display
-}
+  // Store values in session storage and redirect to metronome page
+  sessionStorage.setItem('pageCount', pageCount);
+  sessionStorage.setItem('pageData', JSON.stringify(pageData));
+  window.location.href = 'metronome.html';
+});

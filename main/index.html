@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Welcome to Your Custom Page Generator</h1>
+        <form id="page-form">
+            <label for="num-pages">Number of Pages to Create:</label>
+            <input type="number" id="num-pages" min="1" max="10" required>
+            <button type="button" id="create-pages">Create Pages</button>
+        </form>
+        
+        <div id="pages-container"></div>
+    </div>
+
+    <script>
+        document.getElementById('create-pages').addEventListener('click', function() {
+            const numPages = document.getElementById('num-pages').value;
+            const pagesData = [];
+    
+            for (let i = 0; i < numPages; i++) {
+                const title = document.getElementById(`title-${i}`)?.value || `Page ${i + 1}`;
+                const content = document.getElementById(`content-${i}`)?.value || '';
+                pagesData.push({ title, content });
+            }
+    
+            // Save data to localStorage
+            localStorage.setItem('pagesData', JSON.stringify(pagesData));
+    
+            // Navigate to metronome.html
+            window.location.href = 'metronome.html';
+        });
+    
+        document.getElementById('num-pages').addEventListener('input', function() {
+            const numPages = this.value;
+            const pagesContainer = document.getElementById('pages-container');
+            pagesContainer.innerHTML = ''; // Clear previous inputs
+    
+            for (let i = 0; i < numPages; i++) {
+                const pageDiv = document.createElement('div');
+                pageDiv.classList.add('page-input');
+                pageDiv.innerHTML = `
+                    <h3>Page ${i + 1}</h3>
+                    <label for="title-${i}">Page Title:</label>
+                    <input type="text" id="title-${i}" required><br>
+                    <label for="content-${i}">Page Content:</label><br>
+                    <textarea id="content-${i}" rows="4" cols="50" required></textarea>
+                `;
+                pagesContainer.appendChild(pageDiv);
+            }
+        });
+    </script>
+    
+</body>
+</html>
